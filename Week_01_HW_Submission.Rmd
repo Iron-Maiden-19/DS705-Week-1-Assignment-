@@ -38,27 +38,32 @@ From the HealthExam data set, extract the cholesterol level of the 40 women and 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1a -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
+#install tidyverse
+install.packages("tidyverse")
+
 #  extract the cholesterol level of the 40 women and assign it to the variable fs
 head(HealthExam)
-
-
-
+fs <- data.frame(subset(HealthExam$Cholesterol, HealthExam$Sex=='F'))
+mean(fs)
 ```
 
 ---
 
 ### Part 1b
 
-Apply summary() and sd() to the vector fs to find summary statistics for female cholesterol level.  Based on the summary statistics, does the data appeared to be skewed?  If so, which direction?
+Apply summary() and sd() to the vector fs to find summary statistics for female cholesterol level.  Based on the summary statistics, does the data appeared to be skewed?  If so, which direction? 
 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1b -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+# Summarize dataset and apply sd to dataset to get standard deviation
+summary(fs)
+sd(fs)
+
 
 ```
 
-Replace text with your written answer.
+Based on the Summary Stats the data does appear to be Right-Skewed.
 
 ---
 
@@ -69,11 +74,15 @@ Make a histogram for female cholesterol level.  Label the $x$-axis with "mg/dl" 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1a -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+# histogram for female cholesterol level
+hist(fs,main="Female cholesterol level",xlab="mg/dl")
+
+
+
 
 ```
 
-Replace text with your written answer.
+No it does not appear to be normally distributed. It appears to be left-skewed
 
 ---
 
@@ -84,7 +93,8 @@ Make a boxplot for female cholesterol level.  Label the $y$-axis with "mg/dl" an
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1d -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+# oxplot for female cholesterol level
+boxplot(fs,ylab="mg/dl",main="Female cholesterol level")
 
 ```
 
@@ -93,12 +103,13 @@ Make a boxplot for female cholesterol level.  Label the $y$-axis with "mg/dl" an
 ### Part 1e
 
 According to the 1.5 IQR rule, what is the cutoff value for outliers in the upper tail of female cholesterol level?  
-
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1e -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
 # quantile(fs,.75) gives the third quartile
 # IQR(fs) gives the interquartile range
+out_cut <- IQR(fs)*1.5
+out_cut
 
 ```
 
@@ -111,11 +122,15 @@ The maximum female cholesterol level is an outlier, find its $z$-score.  You'll 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1f -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+# Z score calculation
+z <- (max(fs) - mean(fs))/sd(fs)
+z
+    
+
 
 ```
 
-Replace this text with your written answer.
+The maximum femaale cholesterol level does seem unusually large as it is more than 3 standard deviations from the mean
 
 ---
 
@@ -126,11 +141,16 @@ Make a normal probability plot for fs, add a fit line to it, and label $y$-axis 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1g -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+# normal probability plot for fs
+#plot(fs)
+library(tidyverse)
+qqnorm(fs,main = "Normal Q-Q Plot of Female Cholesterol",
+       xlab = "Theoretical Quantiles", ylab = "Sample Quantiles")
+qqline(fs)
 
 ```
 
-Replace this text with your written answer.
+The sample does not seem to come from a normal distribution as there are measures above the line at the beginning  and at the end as well. The values do not appear to be normally distributed based on the plot
 
 ---
 
@@ -182,14 +202,66 @@ boxplot(testScores$score~testScores$instructor,names=c("Instructor A","Instructo
 
 ```
 
----
+
+### PART 2 A
+```{r}
+``` {r}
+# start by copying and pasting this block of code so you can refer to it as you tweak your own code
+# when you no longer want to execute this block you can delete it, or change the {r}
+# to {r, include=FALSE, eval=FALSE}.  You can also minimize the whole block by clicking the little down arrow next to the line number at the beginning of the block.
+
+# load the data and look at it
+homes <- read.csv("homes.csv")
+head(homes)
+  
+  # summarize the scores for each instructor
+summary(homes$PercentOwned[homes$Year=="year1985"])
+summary(homes$PercentOwned[homes$Year=="year1996"])
+summary(homes$PercentOwned[homes$Year=="year2002"])
+
+
+
+# a more advanced version of this summary by instructor would be to use tapply() to loop over the factors.
+# uncomment the next line to try it
+tapply(homes$PercentOwned, homes$Year, summary)
+
+#  looks like the home ownership percentage across all threeyears range from 37 to 77, to make it easier to compare the distributions lets use the same bins for all three histograms
+bins <- seq(35,80,by=5)
+
+
+```
+```
+```{r}
+```{r, fig.width=8, fig.height=3}
+# set up R to expect an array of plots with 1 row and 3 columns
+# the mar parameter adjust white space around the plot, notice that it has covered the axis labels which is OK here
+par(mfrow=c(1,3),mar=c(4,4,6,4))
+hist(homes$PercentOwned[homes$Year=="year1985"],main="Home Ownership Percentage for 1985",breaks = bins,xlab="Home Ownership %", prob=TRUE)
+hist(homes$PercentOwned[homes$Year=="year1996"],main="Home Ownership Percentage for 1996",breaks = bins,xlab="Home Ownership %", prob=TRUE)
+hist(homes$PercentOwned[homes$Year=="year2002"],main="Home Ownership Percentage for 2002",breaks = bins,xlab="Home Ownership %", prob=TRUE)
+# reset to one plot
+par(mfrow=c(1,1))
+```
+
+```{r, fig.width=7, fig.height=7}
+# make side-by-side boxplots to make comparisons easier
+boxplot(homes$PercentOwned~homes$Year,names=c("1985","1996","2002"),ylab="Percentage",xlab="Year",main="Home Ownership")
+
+
+```
+```
+
+
+
+
+#End PArt 2A 
 
 ### Part 2b
 Comment on similarities and differences among the distributions of home ownership percentages for the years 1985, 1996, and 2002.  Is there a general trend?
 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2b -|-|-|-|-|-|-|-|-|-|-|-
 
-Replace this text with your answer.
+Yes there does appear to be a general trend in home ownership between the 3 years. For similarities, ach year has 3 outliers below the mean. The means of the 3 years are fairly close together. Same with the top rates as well. For differences, the outliers for 1996 and 2002 seem to be spaced similar distacne apart but for 1985 they are much closer together.
 
 ---
 
