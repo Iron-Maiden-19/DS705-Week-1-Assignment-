@@ -1,7 +1,7 @@
 ---
 title: "Week 1 HW Submission"
-author: "*Jim Ryan*"
-date: "*01/22/2020*"
+author: "*type your name here*"
+date: "*enter today's date*"
 output: word_document
 ---
 
@@ -38,12 +38,11 @@ From the HealthExam data set, extract the cholesterol level of the 40 women and 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1a -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-#install tidyverse
-install.packages("tidyverse")
+
 
 #  extract the cholesterol level of the 40 women and assign it to the variable fs
 head(HealthExam)
-fs <- data.frame(subset(HealthExam$Cholesterol, HealthExam$Sex=='F'))
+fs <- subset(HealthExam$Cholesterol, HealthExam$Sex=='F')
 mean(fs)
 ```
 
@@ -143,7 +142,7 @@ Make a normal probability plot for fs, add a fit line to it, and label $y$-axis 
 ```{r}
 # normal probability plot for fs
 #plot(fs)
-library(tidyverse)
+
 qqnorm(fs,main = "Normal Q-Q Plot of Female Cholesterol",
        xlab = "Theoretical Quantiles", ylab = "Sample Quantiles")
 qqline(fs)
@@ -205,7 +204,7 @@ boxplot(testScores$score~testScores$instructor,names=c("Instructor A","Instructo
 
 ### PART 2 A
 ```{r}
-``` {r}
+
 # start by copying and pasting this block of code so you can refer to it as you tweak your own code
 # when you no longer want to execute this block you can delete it, or change the {r}
 # to {r, include=FALSE, eval=FALSE}.  You can also minimize the whole block by clicking the little down arrow next to the line number at the beginning of the block.
@@ -230,8 +229,8 @@ bins <- seq(35,80,by=5)
 
 
 ```
-```
-```{r}
+
+
 ```{r, fig.width=8, fig.height=3}
 # set up R to expect an array of plots with 1 row and 3 columns
 # the mar parameter adjust white space around the plot, notice that it has covered the axis labels which is OK here
@@ -246,14 +245,12 @@ par(mfrow=c(1,1))
 ```{r, fig.width=7, fig.height=7}
 # make side-by-side boxplots to make comparisons easier
 boxplot(homes$PercentOwned~homes$Year,names=c("1985","1996","2002"),ylab="Percentage",xlab="Year",main="Home Ownership")
+```
+```{r}
+
 
 
 ```
-```
-
-
-
-
 #End PArt 2A 
 
 ### Part 2b
@@ -261,7 +258,7 @@ Comment on similarities and differences among the distributions of home ownershi
 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2b -|-|-|-|-|-|-|-|-|-|-|-
 
-Yes there does appear to be a general trend in home ownership between the 3 years. For similarities, ach year has 3 outliers below the mean. The means of the 3 years are fairly close together. Same with the top rates as well. For differences, the outliers for 1996 and 2002 seem to be spaced similar distacne apart but for 1985 they are much closer together.
+Yes there does appear to be a general trend in home ownership between the 3 years.It seems to be increasing For similarities, each year has 3 outliers below the mean. The means of the 3 years are fairly close together. Same with the top rates as well. For differences, the outliers for 1996 and 2002 seem to be spaced similar distacne apart but for 1985 they are much closer together.
 
 ---
 
@@ -276,12 +273,13 @@ Find the probability that a random natural pregnancy lasts less than 250 days.
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 3a -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+z <-  (250-268)/16
+
+pnorm(z)
 
 ```
 
----
-
+ 
 ### Part 3b
 
 Compute the probability that a natural human pregnancy lasts between 260 and 280 days.
@@ -289,8 +287,23 @@ Compute the probability that a natural human pregnancy lasts between 260 and 280
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 3b -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+p260 = 260
+p280 = 280
 
+p1 <- (p260 -268)/16
+pn1 <- pnorm(p1)
+ 
+
+
+p2 <- (p280-268)/16
+pn2 <- pnorm(p2)
+ 
+
+
+panswr <- pn2 - pn1
+
+panswr
+  
 ```
 
 ---
@@ -303,6 +316,11 @@ How long are the longest 10% of natural human pregnancies?
 
 ```{r}
 # insert your code here.
+z10 <- pnorm(.1)
+
+qnorm(.9,mean=268,sd =16,lower.tail=TRUE)
+ 
+
 
 ```
 
@@ -321,7 +339,8 @@ Use read.csv(...) to read the file into a dataframe.  This is an artificial data
 
 ```{r}
 # insert your code here.
-
+bfat_df <- read.csv("bodyFat.csv")
+bfat <- bfat_df[["bodyFat"]] 
 ```
 
 ---
@@ -333,11 +352,12 @@ Make a histogram of the bodyfat percentages.  Does it appear that the data comes
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 4b -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+# Make a histogram of the bodyfat percentages
+hist(bfat,main="Body Fat Percentage Distribution",xlab="Body Fat %")
 
 ```
 
-Replace this text with your written answer.
+IT does appear that the data does come from a normally distributed variable. The values are higher in the middle and lower on both ends. IT you put a dsitribution curve over the top of this it would be bell shaped which indicates normali
 
 ---
 
@@ -348,11 +368,13 @@ Now make a normal probability plot with a fitted line by using qqnorm() and qqli
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 4c -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# insert your code here.
+# normal probability plot with a fitted line by using qqnorm() and qqline()
+qqnorm(bfat)
+qqline(bfat)
 
 ```
 
-Replace this text with your written answer.
+This tells me that the bodyfat data is not normally distributed. IT does not follow the line. At the beginning of the line there is data above the line and the data points start to the left of there the line begins. At the top of the line, there a points that are below the line and do not follow the line.
 
 ---
 
